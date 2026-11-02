@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cuestionario de Enfermería · 200 preguntas</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1b2430;--mu:#667085;--ac:#0e7c86;--ok:#1a8a4a;--okb:#e3f5ea;--bad:#c0392b;--badb:#fbe9e7;--bd:#d9dee5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12171d;--card:#1b232c;--tx:#e8edf2;--mu:#9aa6b2;--ac:#36b5c0;--ok:#4cc38a;--okb:#16372a;--bad:#ff8a7a;--badb:#3d1f1b;--bd:#2d3945}}
+:root[data-theme="dark"]{--bg:#12171d;--card:#1b232c;--tx:#e8edf2;--mu:#9aa6b2;--ac:#36b5c0;--ok:#4cc38a;--okb:#16372a;--bad:#ff8a7a;--badb:#3d1f1b;--bd:#2d3945}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:8px 0}p.s{color:var(--mu);margin:4px 0 16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:12px}
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:13px 16px;width:100%;font-weight:600}
+.btn.alt{background:transparent;color:var(--ac);border:1.5px solid var(--ac);margin-top:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px}
+.chip{border:1.5px solid var(--bd);background:var(--card);border-radius:20px;padding:7px 12px;font-size:14px}
+.chip.on{border-color:var(--ac);background:var(--ac);color:#fff}
+.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:6px 0 14px}.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
+.meta{display:flex;justify-content:space-between;color:var(--mu);font-size:14px}
+.q{font-size:18px;font-weight:600;margin:6px 0 14px}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:9px}
+.opt.ok{border-color:var(--ok);background:var(--okb)}.opt.bad{border-color:var(--bad);background:var(--badb)}
+.fb{margin:10px 0;font-weight:600}.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.big{font-size:44px;font-weight:700;color:var(--ac);text-align:center;margin:6px 0}
+.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd);font-size:15px}
+.rv{border-left:4px solid var(--bad);padding-left:10px;margin:10px 0;font-size:15px}.rv b{color:var(--ok)}
+</style></head><body><main id="app"></main>
+<script>
+var CATS={F:"Fundamentos",M:"Medicina y cirugía",A:"Anatomía y microbiología",P:"Primeros auxilios y ética",I:"Materno-infantil",N:"Salud infantil",C:"Comunitaria"};
+// cat|pregunta|correcta|incorrecta1|incorrecta2|incorrecta3
+var D=`F|Rango normal de temperatura axilar en el adulto|36 a 37.5 °C|34 a 35 °C|38 a 39 °C|39 a 40 °C
+F|Pulso normal del adulto en reposo|60 a 100 por minuto|30 a 50 por minuto|110 a 130 por minuto|140 a 160 por minuto
+F|Frecuencia respiratoria normal del adulto|12 a 20 por minuto|4 a 8 por minuto|25 a 35 por minuto|40 a 50 por minuto
+F|Presión arterial normal del adulto (aprox.)|120/80 mmHg|180/110 mmHg|80/20 mmHg|200/120 mmHg
+F|Si el pulso es menor de 60 por minuto antes de dar un digitálico, usted:|Reporta al médico|Lo administra igual|Duplica la dosis|Lo da con alimentos
+F|NO es uno de los «correctos» al administrar medicamentos|Diagnóstico correcto|Paciente correcto|Dosis correcta|Hora correcta
+F|Si un medicamento cambió de color o consistencia:|Se descarta|Se administra|Se guarda con viñeta|Se refrigera
+F|Gentamicina 30 mg IM; presentación de 80 mg en 1 cc. Dosis a administrar:|0.38 cc|0.5 cc|1 cc|2.7 cc
+F|1,000 cc de solución en 8 horas con macrogotero. Goteo aproximado:|42 gotas por minuto|21 gotas por minuto|83 gotas por minuto|125 gotas por minuto
+F|Insulina de acción rápida, transparente e incolora:|Regular|NPH|Protamina zinc|Globina
+F|Vía habitual para administrar insulina:|Subcutánea|Endovenosa|Intradérmica|Oral
+F|Vía que se usa para provocar reacciones en la piel con fines diagnósticos:|Intradérmica|Intramuscular|Endovenosa|Subcutánea
+F|Posición recomendada en un paciente con afección respiratoria:|Fowler|Decúbito ventral|Decúbito dorsal plano|Trendelenburg
+F|Precaución al administrar oxígeno:|Evitar sustancias oleosas, alcohol y llamas cerca|Lubricar la bigotera con vaselina|Permitir fumar en la habitación|Quitar siempre el humidificador
+F|Método más confiable para destruir todo microorganismo, incluidas las esporas:|Esterilización|Desinfección|Antisepsia|Limpieza
+F|Destruir microorganismos patógenos con agentes químicos como el alcohol se llama:|Desinfección|Colonización|Esterilización|Destrucción celular
+F|Una infección nosocomial es la que se adquiere:|Durante la estancia en un centro de salud|En la comunidad antes de ingresar|Por herencia|Solo por transfusión
+F|Duración recomendada del lavado de manos con agua y jabón:|40 a 60 segundos|5 segundos|10 segundos|5 minutos
+F|Con guantes estériles, las manos enguantadas se mantienen:|Entre la cintura y los hombros, a la vista|Por debajo de la cintura|Tocando superficies del cuarto|Detrás de la espalda
+F|Cuidado de enfermería ante el estreñimiento:|Dieta rica en fibra y líquidos abundantes|Dieta rica en grasa y reposo|Restringir líquidos|Solo proteínas
+F|Orientación para la muestra de orina (examen general):|Limpiar genitales externos y descartar el primer chorro|Hacer lavado vaginal|Recoger solo el primer chorro|Tomarla sin aseo previo
+F|Un objetivo de la aplicación de calor local:|Aumentar la circulación y aliviar el dolor|Provocar vasoconstricción|Detener una hemorragia|Bajar la temperatura corporal
+F|Al aplicar frío local, una precaución es:|Proteger la piel con tela y vigilar el tiempo|Aplicarlo directo por horas|Dejarlo toda la noche sin revisar|Aplicarlo sobre piel lesionada sucia
+F|Signos de un vendaje o yeso demasiado apretado:|Cianosis, frialdad y edema|Piel rosada y tibia|Sin dolor ni hormigueo|Llenado capilar normal
+F|Cuidado específico con sonda vesical permanente:|Vigilar la permeabilidad y mantener cerrado el sistema|Cambiarla cada 2 horas|Desconectar la bolsa para caminar|Irrigar siempre cada 2 horas
+F|Pulso menor de 60 por minuto se llama:|Bradicardia|Taquicardia|Disnea|Hematuria
+F|Sangre en la orina se llama:|Hematuria|Disuria|Anuria|Poliuria
+F|Diuresis horaria mínima normal en el adulto:|30 mL|5 mL|10 mL|100 mL
+F|El balance hídrico compara:|Líquidos ingeridos y eliminados en 24 horas|Peso y talla|Pulso y temperatura|Glucosa y calorías
+F|«PRN» en una indicación médica significa:|Según necesidad|Cada 8 horas|Por vía oral|Antes de comer
+F|«SNG» significa:|Sonda nasogástrica|Solución normal glucosada|Signos neurológicos graves|Sonda neurológica general
+F|Según Maslow, la base de la pirámide son las necesidades:|Fisiológicas|De seguridad|De estima|De autorrealización
+F|Mayor estabilidad corporal se logra con:|Base de sustentación amplia y centro de gravedad bajo|Base estrecha y centro alto|Piernas juntas|Cuerpo inclinado
+F|NO es característica de una nota de enfermería:|Incluir opiniones personales|Ser objetiva|Ser clara y concisa|Llevar fecha y hora
+F|Signos de hipoglucemia:|Sudor frío, temblor y palpitaciones|Piel seca y caliente|Fiebre alta con exantema|Bradicardia y hambre nula
+F|Complicación de la diabetes relacionada con la vista:|Retinopatía diabética|Otitis media|Blefaritis|Chalazión
+F|Cuidado de los pies del paciente diabético:|Secar bien entre los dedos y no caminar descalzo|Caminar descalzo|Cortar callos con navaja|Usar agua muy caliente
+M|La lidocaína es un:|Anestésico local|Antibiótico|Antihipertensivo|Antídoto
+M|La Salmonella Typhi es agente causal de:|Fiebre tifoidea|Hepatitis A|Cirrosis hepática|Apendicitis
+M|Cirugía que crea una salida del intestino a la pared abdominal (cáncer de colon):|Colostomía|Gastrectomía|Colecistectomía|Toracotomía
+M|Ojo ocluido y evitar movimientos bruscos de la cabeza: cuidado postoperatorio de:|Cataratas|Chalazión|Blefaritis|Conjuntivitis
+M|Acción inmediata ante una herida penetrante de tórax:|Cubrirla con apósito oclusivo (sello torácico)|Retirar el objeto|Dejarla descubierta|Dar líquidos abundantes
+M|Orientación en infección de vías urinarias recurrente:|Cumplir el tratamiento y buen aseo genital|Restringir líquidos|Suspender el tratamiento al mejorar|Evitar orinar
+M|Dolor torácico opresivo irradiado al hombro y brazo sugiere:|Infarto agudo de miocardio|Faringitis|Cefalea tensional|Estreñimiento
+M|Prueba sanguínea que apoya el diagnóstico de infarto:|Troponinas o enzimas cardíacas|Ácido úrico|Bilirrubina|Tiempo de sangría solamente
+M|La nitroglicerina actúa como:|Vasodilatador|Anticoagulante|Antibiótico|Diurético
+M|La intoxicación digitálica puede cursar con:|Náuseas, vómitos y bradicardia|Hipertensión grave|Fiebre alta|Prurito generalizado
+M|Cuidado tras una punción lumbar:|Reposo horizontal e hidratación|Caminar de inmediato|Restringir líquidos|Sentar a 90°
+M|Posición para un paciente en crisis asmática:|Semisentado (Fowler)|Boca abajo|Trendelenburg|Plano en decúbito dorsal
+M|Signos de crisis de asma aguda:|Sibilancias y dificultad respiratoria|Bradipnea sin esfuerzo|Piel seca|Hipotermia
+M|Al aspirar secreciones de una traqueostomía debe:|Usar técnica estéril y aspirar pocos segundos|Aspirar 2 minutos seguidos|Reutilizar la sonda|Usar guantes sucios
+M|En un paciente con diuréticos es importante:|Controlar líquidos ingeridos y eliminados, y el peso|Restringir el pulso|Darlo siempre al acostarse|Ignorar los electrolitos
+M|Excavación de la mucosa del estómago o duodeno:|Úlcera péptica|Hepatitis|Colecistitis|Apendicitis
+M|Sintomático respiratorio es quien tiene tos con flema por:|15 días o más|3 días|5 días|1 día
+M|Medicamentos de la fase inicial del tratamiento de tuberculosis:|Rifampicina, isoniacida, pirazinamida y etambutol|Penicilina y amoxicilina|Paracetamol e ibuprofeno|Insulina y metformina
+M|Pilares de la segunda fase del tratamiento de tuberculosis:|Rifampicina e isoniacida|Pirazinamida y etambutol|Amoxicilina|Cloroquina
+M|Mejor muestra de esputo para baciloscopía:|Esputo profundo, de la primera hora de la mañana|Saliva de la tarde|Esputo ingerido|Mezcla de agua con saliva
+A|Membrana que cubre los pulmones:|Pleura|Pericardio|Peritoneo|Meninges
+A|Cantidad promedio de sangre en un adulto:|5 litros|1 litro|10 litros|15 litros
+A|Glóbulos que combaten la infección por fagocitosis:|Leucocitos|Eritrocitos|Plaquetas|Hemoglobina
+A|Órgano que almacena la bilis:|Vesícula biliar|Páncreas|Bazo|Riñón
+A|El oído externo se compone de:|Pabellón auricular y conducto auditivo externo|Martillo y yunque|Cóclea|Trompa de Eustaquio
+A|Unidad infecciosa de un virus:|Virión|Espora|Toxoide|Fómite
+A|Portador es quien:|Hospeda al agente infeccioso sin presentar enfermedad|Está inmune|Está gravemente enfermo|Transmite solo por picadura
+A|Fómites son:|Objetos inanimados que pueden transmitir microorganismos|Personas enfermas|Mosquitos|Alimentos únicamente
+A|Toxoide es:|Toxina modificada que estimula la producción de anticuerpos|Antibiótico|Bacteria viva|Suero de caballo
+A|Periodo de incubación:|Tiempo entre la exposición al agente y los primeros síntomas|Duración total de la enfermedad|Tiempo de recuperación|Tiempo de hospitalización
+P|Los primeros auxilios son:|Atención inmediata y temporal a una persona lesionada o enferma|Tratamiento definitivo hospitalario|Cirugía menor|Rehabilitación
+P|El método A-B-C de la vida corresponde a:|Vía aérea, respiración y circulación|Alimentación, bebida y cuidado|Aire, bienestar y calor|Alerta, base y control
+P|RCP pediátrico con dos reanimadores, relación compresiones:ventilaciones:|15:2|30:1|5:15|1:30
+P|Primeros auxilios ante un desmayo:|Acostar con las piernas elevadas y aflojar la ropa|Sentar y dar agua|Dar un golpe en la espalda|Levantar de inmediato
+P|Ante una mordedura de serpiente:|Mantener calma e inmovilizar el miembro y trasladar|Hacer torniquete apretado|Succionar con la boca|Cortar la herida
+P|En intoxicación por cáusticos (álcalis):|No provocar el vómito y trasladar|Provocar el vómito|Dar aceite para vomitar|Dar bicarbonato
+P|La gravedad de una herida depende de:|Profundidad, extensión y localización|Color y olor|Edad del objeto|Hora del día
+I|La implantación del óvulo fecundado ocurre en el:|Endometrio|Ovario|Trompa de Falopio|Cuello uterino
+I|Entre la ovulación y la menstruación transcurren normalmente:|14 días|7 días|21 días|28 días
+I|Signo de certeza de embarazo:|Latidos cardíacos fetales|Náuseas matutinas|Amenorrea|Aumento de mamas
+I|Mujer que nunca ha tenido un parto:|Nulípara|Multípara|Primípara|Gran multípara
+I|Un parto a término ocurre entre las semanas:|37 y menos de 42|20 y 28|28 y 32|Más de 42
+I|La eclampsia se distingue de la preeclampsia por:|La presencia de convulsiones|La presión baja|La fiebre|La hemorragia
+I|Antídoto del sulfato de magnesio:|Gluconato de calcio|Vitamina K|Naloxona|Atropina
+I|Ante un prolapso de cordón umbilical:|Posición genupectoral o Trendelenburg, cubrir con gasa húmeda estéril y avisar|Empujar el cordón con fuerza|Esperar a que ceda|Cortar el cordón
+I|Vacunas contraindicadas en el embarazo:|Las de virus vivos (SR, varicela)|Td|Influenza inactivada|Toxoide tetánico
+I|El ácido fólico previene:|Defectos del tubo neural|Diabetes gestacional|Parto prematuro|Anemia hemolítica
+I|El Apgar evalúa:|Frecuencia cardíaca, respiración, tono, reflejos y color|Peso y talla|Temperatura|Perímetro cefálico
+I|Peso normal del recién nacido a término:|2,500 a 4,000 g|1,000 a 1,500 g|4,500 a 5,500 g|500 a 1,000 g
+I|El principal riesgo de la atonía uterina es:|Hemorragia posparto|Infección urinaria|Eclampsia|Aborto
+I|Ictericia en las primeras 24 horas de vida es:|Patológica|Fisiológica normal|Sin importancia|Causada por la lactancia
+N|La primera dosis de pentavalente se aplica a los:|2 meses|Al nacer|6 meses|12 meses
+N|Vacuna que nunca debe congelarse porque pierde efectividad:|Pentavalente (DPT)|BCG|Polio oral|SR
+N|Temperatura adecuada del refrigerador de vacunas:|2 a 8 °C|-10 a 0 °C|10 a 15 °C|15 a 25 °C
+N|En mayores de 10 años expuestos al tétano se aplica:|Td (toxoides tetánico y diftérico) adulto|BCG|Rotavirus|SRP
+N|Signo de deshidratación grave en un niño con diarrea:|Letárgico o inconsciente, no puede beber|Bebe con avidez y está inquieto|Ojos normales|Mucosas húmedas
+N|El plan B de rehidratación con suero oral dura:|4 horas|30 minutos|12 horas|2 días
+N|La lactancia materna exclusiva se recomienda hasta los:|6 meses|2 meses|3 meses|12 meses
+N|Inflamación del parénquima pulmonar:|Neumonía|Faringitis|Rinitis|Amigdalitis
+C|Las siglas ECOS en el primer nivel de atención significan:|Equipos Comunitarios de Salud Familiar|Equipos Sociales de Salud|Equipos de Salud Salvadoreña|Estrategias Comunitarias de Salud
+C|Vehículo o medio por el que viaja el mensaje:|Canal|Emisor|Receptor|Retroalimentación
+C|La leptospirosis se transmite por:|Orina de roedores|Picadura de Anopheles|Garrapatas|Agua potable clorada
+C|Pionera de la enfermería a nivel mundial:|Florence Nightingale|Clara Barton|Marie Curie|Dorothea Dix
+F|La posición de litotomía se usa para:|Examen ginecológico y parto|Oxigenoterapia|Reposo post comida|Baño en cama
+F|Posición de Trendelenburg:|Cabeza más baja que los pies|Cabeza elevada 45°|Sentado|Boca abajo
+F|Decúbito ventral significa:|Boca abajo|De lado|Boca arriba|Sentado
+F|Posición de Sims, útil para enema:|Decúbito lateral izquierdo semiprono|Sentado|Litotomía|Fowler
+F|Ángulo de aplicación de una inyección intradérmica:|10 a 15°|90°|45°|60°
+F|Ángulo de una inyección intramuscular:|90°|10°|15°|30°
+F|Sitio frecuente de inyección IM en el adulto:|Cuadrante superior externo del glúteo|Abdomen|Antebrazo|Cuello
+F|Al dar medicamento endovenoso debe verificar:|Permeabilidad de la vía y ausencia de aire en la jeringa|Que sea una vía sucia|Que se administre muy rápido siempre|Que se mezcle con cualquier fármaco
+F|Objetivo del baño en cama:|Limpiar, estimular la circulación y dar comodidad|Aumentar la fiebre|Inducir el vómito|Medir la presión
+F|Objetivo del aseo oral:|Mantener la boca limpia y prevenir infecciones|Provocar vómito|Disminuir el peso|Aumentar la diuresis
+F|Objetivo del enema evacuante:|Estimular la evacuación intestinal|Hidratar por vena|Medir la glucosa|Aumentar la presión
+F|Al tomar la presión arterial, el brazalete se coloca:|Ajustado y a la altura del corazón|Sobre ropa gruesa|Muy flojo|En el brazo con venoclisis
+F|Sitio más común para tomar el pulso:|Arteria radial|Arteria plantar|Frente|Abdomen
+F|El pulso apical se toma:|Sobre el ápex del corazón con estetoscopio|En la muñeca|En el tobillo|En el cuello sin estetoscopio
+F|Tiempo aproximado de la temperatura axilar:|3 a 5 minutos|10 segundos|20 minutos|1 hora
+F|Cuidado de enfermería ante fiebre:|Medios físicos, líquidos y antipirético indicado|Abrigar con muchas cobijas|Restringir líquidos|Baño con agua caliente
+F|Se considera fiebre axilar en el adulto:|38 °C o más|36 °C|35 °C|37 °C exactos
+F|Hipotermia es:|Temperatura corporal baja|Fiebre alta|Pulso rápido|Presión alta
+F|Taquipnea es:|Respiración rápida|Respiración lenta|Ausencia de respiración|Respiración ruidosa
+F|Apnea es:|Ausencia de respiración|Respiración rápida|Respiración profunda|Tos seca
+F|Oliguria es:|Disminución de la cantidad de orina|Aumento de orina|Sangre en orina|Dolor al orinar
+F|Poliuria es:|Aumento de la cantidad de orina|Ausencia de orina|Orina con sangre|Orina turbia
+F|Para esterilizar en autoclave, el material debe estar:|Limpio, seco y empacado|Sucio|Mojado|Sin empaque
+F|Un material estéril se considera contaminado si:|Se humedece o toca una superficie no estéril|Se guarda en su paquete|Está rotulado|Está en el estante
+F|Los objetos cortopunzantes se desechan:|En recipiente rígido, sin reencapuchar|En la basura común|Reencapuchando la aguja|En bolsa de papel
+F|Las precauciones estándar se aplican a:|Todos los pacientes|Solo pacientes con VIH|Solo niños|Solo pacientes aislados
+F|La ergonomía en enfermería busca:|Prevenir lesiones aplicando mecánica corporal|Estudiar fármacos|Medir signos vitales|Preparar material estéril
+F|Valor normal de glucosa en ayunas:|70 a 100 mg/dL|200 a 300 mg/dL|20 a 40 mg/dL|400 mg/dL
+F|Antes de alimentar por sonda nasogástrica debe:|Comprobar que la sonda esté en el estómago|Acostar al paciente plano|Dar la fórmula muy fría|Forzar el émbolo
+M|Dieta recomendada en hipertensión arterial:|Baja en sal|Alta en sal|Alta en grasas saturadas|Rica en embutidos
+M|Signos clásicos de hiperglucemia:|Poliuria, polidipsia y polifagia|Sudor frío y temblor|Bradicardia y frío|Tos y fiebre
+M|Aliento afrutado sugiere:|Cetoacidosis diabética|Hipoglucemia|Anemia|Asma
+M|La nitroglicerina sublingual se usa en:|Angina de pecho|Fractura|Otitis|Gastritis
+M|Cuidado en neumonía:|Posición Fowler, líquidos y oxígeno según indicación|Decúbito ventral|Restringir líquidos|Ejercicio intenso
+M|Dolor en fosa ilíaca derecha sugiere:|Apendicitis|Gastritis|Otitis|Cefalea
+M|Ante sospecha de apendicitis NO se debe:|Dar laxantes ni aplicar calor|Reportar al médico|Mantener en ayuno|Vigilar signos vitales
+M|Requisito legal antes de una cirugía:|Consentimiento informado firmado|Alta médica|Dieta completa|Visita familiar
+M|Cuidado inmediato postoperatorio:|Vigilar vía aérea, signos vitales y sangrado|Dar alimentos sólidos|Dejar sin vigilancia|Sentar de inmediato
+M|Prevención de úlceras por presión:|Cambiar de posición cada 2 horas|Mantener siempre boca arriba|Usar sábanas arrugadas|Dejar piel húmeda
+M|En paciente con yeso en un brazo debe:|Elevar el miembro y vigilar circulación|Introducir objetos para rascar|Mojar el yeso|Ignorar el dolor
+M|Transmisión de la hepatitis A:|Fecal-oral|Por picadura de mosquito|Por gotitas respiratorias|Por contacto con animales
+M|Signos de anemia:|Palidez y cansancio|Piel enrojecida y fiebre|Tos productiva|Edema generalizado
+M|Ante una convulsión debe:|Proteger de lesiones y colocar de lado, sin meter objetos a la boca|Sujetar con fuerza|Introducir una cuchara|Dar agua
+M|Signo de ACV:|Debilidad en un lado y asimetría facial|Tos con flema|Dolor al orinar|Picazón en la piel
+M|Primeros cuidados en una quemadura leve:|Enfriar con agua corriente y no reventar ampollas|Aplicar hielo directo|Aplicar pasta dental|Reventar ampollas
+M|Ante una epistaxis (sangrado nasal):|Inclinar la cabeza hacia adelante y presionar la nariz|Echar la cabeza atrás|Introducir algodón profundo|Acostar boca arriba
+M|Posición para alimentar por gastrostomía:|Semisentado|Boca abajo|Trendelenburg|Plano
+M|En dengue se evita el uso de:|Aspirina e ibuprofeno|Paracetamol|Líquidos orales|Reposo
+M|Cuidado de una herida quirúrgica:|Mantenerla limpia y seca con técnica aséptica|Tocarla sin guantes|Aplicar tierra|Dejarla húmeda
+M|Ante ictericia (piel amarilla) se sospecha:|Alteración hepática o biliar|Otitis|Fractura|Rinitis
+A|El núcleo celular contiene:|ADN|Bilis|Hemoglobina|Insulina
+A|Orgánulo que produce energía en la célula:|Mitocondria|Membrana|Ribosoma|Núcleo
+A|El corazón humano tiene:|4 cavidades|2 cavidades|3 cavidades|6 cavidades
+A|El intercambio de gases ocurre en los:|Alvéolos|Bronquios|Faringe|Tráquea
+A|El páncreas produce:|Insulina|Bilis|Orina|Hemoglobina
+A|El hueso más largo del cuerpo:|Fémur|Húmero|Tibia|Radio
+A|La absorción de nutrientes ocurre principalmente en el:|Intestino delgado|Esófago|Estómago|Recto
+A|El hígado produce:|Bilis|Insulina|Orina|Saliva
+P|Ante atragantamiento con obstrucción total en adulto:|Maniobra de Heimlich|Dar agua|Acostar|Golpear el abdomen sin técnica
+P|Para detener una hemorragia externa:|Presión directa sobre la herida|Aplicar torniquete siempre|Lavar con alcohol y dejar|Elevar solo la cabeza
+P|Ante una fractura sospechada:|Inmovilizar la zona y trasladar|Mover para acomodar el hueso|Masajear|Aplicar calor intenso
+P|El secreto profesional significa:|Mantener confidencial la información del paciente|Compartirla con vecinos|Publicarla|Venderla
+P|Los cuatro principios de la bioética son:|Autonomía, beneficencia, no maleficencia y justicia|Rapidez, orden, limpieza, silencio|Fe, caridad, ahorro, tiempo|Ley, castigo, premio, deber
+P|El consentimiento informado respeta el principio de:|Autonomía|Justicia|Beneficencia|Maleficencia
+P|Principio de «no maleficencia»:|No hacer daño|Hacer siempre el bien|Dar a cada quien lo justo|Respetar decisiones
+P|El Código de ética sirve para:|Orientar la conducta profesional|Medir signos vitales|Preparar fármacos|Calcular dosis
+I|La fecha probable de parto (regla de Naegele) se calcula:|FUM + 7 días − 3 meses|FUM + 14 días|FUM + 3 meses|FUM − 7 días
+I|La duración normal del embarazo es de:|40 semanas|20 semanas|30 semanas|50 semanas
+I|Para controlar las náuseas del embarazo se recomienda:|Comidas pequeñas y frecuentes|Ayuno prolongado|Comidas muy grasosas|Comidas abundantes
+I|Un signo de alarma en el embarazo es:|Cefalea intensa con visión borrosa|Aumento leve de apetito|Sueño normal|Pequeños movimientos fetales
+I|Ante sangrado vaginal en el tercer trimestre:|Referir de urgencia, sin tacto vaginal|Realizar tacto vaginal|Dar laxantes|Indicar caminar
+I|El cordón umbilical normal tiene:|2 arterias y 1 vena|1 arteria y 2 venas|2 venas y 2 arterias|3 arterias
+I|La primera leche materna se llama:|Calostro|Leche madura|Leche de transición|Fórmula
+I|Los loquios son:|Secreción vaginal posparto|Orina del recién nacido|Primera leche|Heces del bebé
+I|Los entuertos son:|Contracciones uterinas dolorosas del puerperio|Dolor de mamas|Sangrado nasal|Náusea
+I|Vitamina que se aplica al recién nacido para prevenir hemorragia:|Vitamina K|Vitamina C|Vitamina D|Vitamina B12
+I|Vacunas que recibe el recién nacido:|BCG y hepatitis B|SR y varicela|DPT y polio|Rotavirus
+I|El contacto piel con piel inmediato favorece:|El apego y la lactancia|La fiebre|El llanto|La hipotermia
+I|Duración del puerperio:|Aproximadamente 6 semanas|1 semana|6 meses|1 año
+I|Etapa del parto desde dilatación completa hasta el nacimiento:|Período expulsivo|Dilatación|Alumbramiento|Puerperio
+N|Signo de peligro general en AIEPI:|No puede beber o mamar|Estornudos|Tos leve|Hambre
+N|El peso del bebé se duplica aproximadamente a los:|5 a 6 meses|1 mes|12 meses|2 años
+N|El rotavirus causa principalmente:|Diarrea|Neumonía|Meningitis|Otitis
+N|El sarampión se caracteriza por:|Fiebre, tos, conjuntivitis y exantema|Solo vómitos|Parálisis|Dolor de oído
+N|La varicela se caracteriza por:|Vesículas con picazón|Parálisis|Tos con sangre|Vómito persistente
+N|La tos ferina es causada por:|Bordetella pertussis|Salmonella|Virus del sarampión|Plasmodium
+N|Frecuencia respiratoria rápida en niño de 12 meses a 5 años:|40 o más por minuto|20 por minuto|30 por minuto|25 por minuto
+N|Frecuencia respiratoria rápida en lactante menor de 2 meses:|60 o más por minuto|30 por minuto|40 por minuto|20 por minuto
+N|En el plan A de diarrea:|Dar más líquidos y continuar alimentación|Suspender alimentos|Dar antibióticos siempre|Dar solo agua
+N|Los oxiuros producen:|Prurito anal nocturno|Tos|Fiebre alta|Ictericia
+N|La sarna (escabiosis) produce:|Picazón intensa, sobre todo de noche|Tos|Diarrea|Ictericia
+N|La vitamina A en niños previene:|Ceguera nocturna|Raquitismo|Anemia|Caries
+C|La vigilancia epidemiológica consiste en:|Recolectar y analizar datos de salud continuamente|Curar enfermos|Operar|Dar medicamentos
+C|La promoción de la salud busca:|Que las personas mejoren y cuiden su salud|Curar con cirugía|Aislar enfermos|Cobrar consultas
+C|La vacunación es un nivel de prevención:|Primario|Terciario|Secundario|Ninguno
+C|Medida para prevenir el dengue:|Eliminar criaderos de zancudos|Comer menos|Hervir la leche|Evitar el sol
+C|Medida para prevenir diarrea en la comunidad:|Agua segura y lavado de manos|Usar agua de charco|Defecar al aire libre|Compartir utensilios
+C|La visita domiciliar permite:|Conocer riesgos de salud de la familia|Operar en casa|Cobrar|Hospitalizar
+C|La participación comunitaria ayuda a:|Resolver problemas de salud con la gente|Reemplazar al sistema de salud|Evitar la educación|Aumentar enfermedades
+C|Cobertura de vacunación es:|Porcentaje de población vacunada|Número de vacunas rotas|Costo de vacunas|Edad de vacunación`.split("\n").map(function(l){var p=l.split("|");return{c:p[0],q:p[1],a:p[2],o:p.slice(2)}});
+var app=document.getElementById("app"),st={},sel={};
+function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function home(){var h='<h1>Cuestionario de Enfermería</h1><p class="s">'+D.length+' preguntas basadas en el documento de preparación para pruebas de egreso (Técnico/a en Enfermería).</p><div class="card"><b>Temas</b><div class="chips">';
+for(var k in CATS)h+='<button class="chip'+(sel[k]===false?'':' on')+'" data-k="'+k+'">'+CATS[k]+'</button>';
+h+='</div><button class="btn" id="go">Comenzar</button></div>';app.innerHTML=h;
+app.querySelectorAll(".chip").forEach(function(b){b.onclick=function(){sel[b.dataset.k]=sel[b.dataset.k]===false;home()}});
+document.getElementById("go").onclick=function(){var l=D.filter(function(x){return sel[x.c]!==false});if(l.length)start(l)}}
+function start(l){st={l:sh(l).map(function(x){return{c:x.c,q:x.q,a:x.a,o:sh(x.o)}}),i:0,ok:0,bad:[],by:{}};show()}
+function show(){var q=st.l[st.i],n=st.l.length,h='<div class="meta"><span>Pregunta '+(st.i+1)+' de '+n+'</span><span>✔ '+st.ok+'</span></div><div class="bar"><i style="width:'+(st.i/n*100)+'%"></i></div><div class="card"><div class="meta">'+CATS[q.c]+'</div><div class="q">'+q.q+'</div>';
+q.o.forEach(function(o,i){h+='<button class="opt" data-i="'+i+'">'+o+'</button>'});
+h+='<div id="fb"></div></div>';app.innerHTML=h;
+app.querySelectorAll(".opt").forEach(function(b){b.onclick=function(){ans(b,q)}});window.scrollTo(0,0)}
+function ans(b,q){var bs=app.querySelectorAll(".opt"),o=q.o[b.dataset.i],g=o===q.a,y=st.by[q.c]||(st.by[q.c]=[0,0]);y[1]++;
+bs.forEach(function(x){x.disabled=true;if(q.o[x.dataset.i]===q.a)x.classList.add("ok")});
+if(g){st.ok++;y[0]++}else{b.classList.add("bad");st.bad.push(q)}
+var f=document.getElementById("fb");f.innerHTML='<div class="fb '+(g?'ok':'bad')+'">'+(g?'¡Correcto!':'Incorrecto. Respuesta: '+q.a)+'</div><button class="btn" id="nx">'+(st.i+1<st.l.length?'Siguiente':'Ver resultados')+'</button>';
+document.getElementById("nx").onclick=function(){st.i++;st.i<st.l.length?show():end()}}
+function end(){var n=st.l.length,p=Math.round(st.ok/n*100),h='<h1>Resultados</h1><div class="card"><div class="big">'+st.ok+' / '+n+'</div><p class="s" style="text-align:center">'+p+'% de aciertos</p>';
+for(var k in st.by)h+='<div class="row"><span>'+CATS[k]+'</span><b>'+st.by[k][0]+'/'+st.by[k][1]+'</b></div>';
+h+='</div>';if(st.bad.length){h+='<div class="card"><b>Para repasar ('+st.bad.length+')</b>';st.bad.forEach(function(q){h+='<div class="rv">'+q.q+'<br><b>'+q.a+'</b></div>'});h+='</div><button class="btn" id="rp">Repetir solo las falladas</button>'}
+h+='<button class="btn alt" id="hm">Volver al inicio</button>';app.innerHTML=h;
+if(st.bad.length)document.getElementById("rp").onclick=function(){start(st.bad.map(function(q){return{c:q.c,q:q.q,a:q.a,o:q.o}}))};
+document.getElementById("hm").onclick=home;window.scrollTo(0,0)}
+home();
+</script></body></html>
